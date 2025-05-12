@@ -6,34 +6,37 @@ import java.util.List;
 public class Main {
 
     public static void sortByObjetivo(List<Individuo> fronteira, int posObjetivo) {
-        fronteira.sort((o1, o2) -> o1.f[posObjetivo] > o2.f[posObjetivo] ? 1 : -1);
+        fronteira.sort(Comparator.comparingDouble(o -> o.f[posObjetivo]));
     }
 
-    public static void crowdingDistance(List<List<Individuo>> fronteiras){
-
-        for(List<Individuo> fronteira : fronteiras){
-            int l = fronteiras.size();
-            // Deve-se setar todos os d's como 0 (mas o java ja faz isso)
+    public static void crowdingDistance(List<List<Individuo>> fronteiras) {
+        for (List<Individuo> fronteira : fronteiras) {
             int mlen = fronteira.get(0).f.length;
-            for(int m = 0; m < mlen; m++){
-                sortByObjetivo(fronteira, m);
-                fronteira.get(0).d = Double.POSITIVE_INFINITY;
-                fronteira.get(fronteira.size() - 1).d = Double.POSITIVE_INFINITY;
-                int max = fronteira.size() - 1;
-                for(int i = 1; i < max; i++){
-                    int finalM = m;
-                    Individuo minInd = Collections.min(fronteira, Comparator.comparingDouble(ind -> ind.f[finalM]));
-                    Individuo maxInd = Collections.max(fronteira, Comparator.comparingDouble(ind -> ind.f[finalM]));
-                    double fm_min = minInd.f[m];
-                    double fm_max = maxInd.f[m];
-                    double aux = (fronteira.get(i + 1).f[m] - fronteira.get(i - 1).f[m]) / (fm_max - fm_min);
-                    fronteira.get(i).d += aux;
-                }
+
+            // Inicializa d = 0 para todos
+            for (Individuo ind : fronteira) {
+                ind.d = 0.0;
             }
 
+            for (int m = 0; m < mlen; m++) {
+                sortByObjetivo(fronteira, m);
 
+                fronteira.get(0).d = Double.POSITIVE_INFINITY;
+                fronteira.get(fronteira.size() - 1).d = Double.POSITIVE_INFINITY;
+
+                double fm_min = fronteira.get(0).f[m];
+                double fm_max = fronteira.get(fronteira.size() - 1).f[m];
+
+                if (fm_max - fm_min == 0) continue; // evita divisão por zero
+
+                for (int i = 1; i < fronteira.size() - 1; i++) {
+                    double distancia = (fronteira.get(i + 1).f[m] - fronteira.get(i - 1).f[m]) / (fm_max - fm_min);
+                    fronteira.get(i).d += distancia;
+                }
+            }
         }
     }
+
 
     public static void imprimeFronteiras(List<List<Individuo>> fronteiraList){
         int f = 1;
@@ -66,10 +69,5 @@ public class Main {
 
         System.out.println();
         imprimeFronteiras(fronteiraList);
-
-
-
-        // Imprimir as fronteiras
-
     }
 }
