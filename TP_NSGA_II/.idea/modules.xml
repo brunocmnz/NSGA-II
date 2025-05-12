@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TP_FNDS.iml" filepath="$PROJECT_DIR$/TP_FNDS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TP_NSGA_II.iml" filepath="$PROJECT_DIR$/TP_NSGA_II.iml" />
     </modules>
   </component>
 </project>

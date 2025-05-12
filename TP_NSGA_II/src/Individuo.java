@@ -11,6 +11,8 @@ public class Individuo {
     protected int n;
     // Seu rank
     protected int rank;
+    // Sua classificação
+    protected double d;
     //Descricao
     protected String desc;
 
@@ -48,7 +50,10 @@ public class Individuo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-
-        return desc + "(" +f[0] + ", " +f[1]  + ")";
+        if(d > 0){
+            return desc + "{(" +f[0] + ", " +f[1]  + ") d: " + d + "}";
+        }else{
+            return desc + "(" +f[0] + ", " +f[1]  + ")";
+        }
     }
 }
